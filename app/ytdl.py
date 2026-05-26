@@ -877,6 +877,9 @@ class DownloadQueue:
                 output = self.config.OUTPUT_TEMPLATE_CHANNEL
             sanitized = {k: _sanitize_path_component(v) for k, v in entry.items()}
             output = _resolve_outtmpl_fields(output, sanitized, ('channel',))
+        if entry is not None and entry.get('title'):
+            sanitized = {k: _sanitize_path_component(v) for k, v in entry.items()}
+            output = _resolve_outtmpl_fields(output, sanitized, ('title', 'id'))
         ytdl_options = self._build_ytdl_options(
             getattr(dl, 'ytdl_options_presets', None),
             getattr(dl, 'ytdl_options_overrides', {}) or {},
