@@ -276,6 +276,12 @@ async def test_extract_info_preset_null_download_archive_overrides_global(dq_env
         def __init__(self, params=None):
             captured_params.append(params)
 
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
         def extract_info(self, url, download=False):
             return {
                 "_type": "video",
@@ -284,6 +290,10 @@ async def test_extract_info_preset_null_download_archive_overrides_global(dq_env
                 "url": url,
                 "webpage_url": url,
             }
+
+        def evaluate_outtmpl(self, template, info_dict):
+            key = template[2:template.index(")")]
+            return str(info_dict.get(key, ""))
 
     notifier = AsyncMock()
     dq = DownloadQueue(dq_env, notifier)
@@ -302,7 +312,6 @@ async def test_extract_info_preset_null_download_archive_overrides_global(dq_env
         )
 
     assert result["status"] == "ok"
-    assert len(captured_params) == 1
     extract_params = captured_params[0]
     assert extract_params.get("download_archive") is None
     assert extract_params["extract_flat"] is True
@@ -323,6 +332,12 @@ async def test_extract_info_metube_extract_keys_win_over_preset(dq_env):
         def __init__(self, params=None):
             captured_params.append(params)
 
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
         def extract_info(self, url, download=False):
             return {
                 "_type": "video",
@@ -331,6 +346,10 @@ async def test_extract_info_metube_extract_keys_win_over_preset(dq_env):
                 "url": url,
                 "webpage_url": url,
             }
+
+        def evaluate_outtmpl(self, template, info_dict):
+            key = template[2:template.index(")")]
+            return str(info_dict.get(key, ""))
 
     notifier = AsyncMock()
     dq = DownloadQueue(dq_env, notifier)

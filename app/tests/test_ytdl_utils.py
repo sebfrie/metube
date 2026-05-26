@@ -78,6 +78,11 @@ class ResolveOuttmplFieldsTests(unittest.TestCase):
         result = _resolve_outtmpl_fields("%(title)s/%(ext)s", info, ("playlist",))
         self.assertEqual(result, "%(title)s/%(ext)s")
 
+    def test_title_and_id_prefixes(self):
+        info = {"title": "Arthur und die Freunde der Tafelrunde - Folge 1", "id": "mediathek_12345"}
+        result = _resolve_outtmpl_fields("%(title)S.%(id)s.%(ext)s", info, ("title", "id"))
+        self.assertEqual(result, "Arthur und die Freunde der Tafelrunde - Folge 1.mediathek_12345.%(ext)s")
+
     def test_default_value(self):
         info = {"playlist_index": "1"}
         result = _resolve_outtmpl_fields("%(playlist_title|Unknown)s/%(playlist_index)s", info, ("playlist",))
