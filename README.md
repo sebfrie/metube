@@ -385,4 +385,4 @@ A Docker image can be built locally (it will build the UI too):
 docker build -t metube .
 ```
 
-Note: If you're running the server in VSCode, your downloads will go to your user's Downloads folder (this is configured via the environment in `.vscode/launch.json`).
+Note that if you're running the server in VSCode, your downloads will go to your user's Downloads folder (this is configured via the environment in `.vscode/launch.json`).
